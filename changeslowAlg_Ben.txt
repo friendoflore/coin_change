@@ -1,0 +1,26 @@
+Algorithm 1: changeslow (Ben)
+
+
+changeSlow (K, V)
+    foreach value Vi < K:
+        if (K == Vi)
+            C[i] = C[i] + 1
+            return (C, 1)
+        min_coins = -(inf)
+        for (i = 1; i < K; i++)
+            (Ca, coins_a) = slowChange (i, V)
+            (Cb, coins_b) = slowChange (K - i)
+            coins = coins_a + coins_b
+            if (coins < min_coins OR min_coins == -(inf))
+                min_coins = coins
+                C = Ca + Cb         //  Example: [0, 1, 4] + [1, 1, 2] = [1, 2, 6]
+        return (C, min_coins)
+        
+*****
+A: amount for which we want to make change
+K initially passed in is A
+Vi is a coin denomination
+C is the array that keeps track of the number of each denomination.
+    The sum of array C should always be A.
+coins, coins_a, coins_b, min_coins: positive integers
+
