@@ -62,7 +62,7 @@ changedpInternal(change, V, T, C)   // V, T, C passed by reference
             return 1
     
     from i=0 to V[i] < change
-        numCoins = 1 + changedpInternal(V, change - V[i], T, C)
+        numCoins = 1 + changedpInternal(change - V[i], V, T, C)
         if (numCoins <= minCoins)
             minCoins = numCoins
             D = C[change - V[i]]     // (re)assign D
