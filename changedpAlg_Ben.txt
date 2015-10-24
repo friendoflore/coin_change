@@ -48,6 +48,7 @@ changedpInternal(change, V, T, C)   // V, T, C passed by reference
     else if (change == 1)
         D[0] = 1    // array [1,0,0,...,0]
         C[1] = D
+        T[1] = 1
         return 1
     else if change < T.length // solution for change
                               // should be in table T
@@ -62,10 +63,11 @@ changedpInternal(change, V, T, C)   // V, T, C passed by reference
     
     from i=0 to V[i] < change
         numCoins = 1 + changedpInternal(V, change - V[i], T, C)
-        if (numCoins < minCoins)
+        if (numCoins <= minCoins)
             minCoins = numCoins
             D = C[change - V[i]]     // (re)assign D
             D[i] = D[i] + 1
+            C[change] = D
             T[change] = minCoins
     
     return minCoins
