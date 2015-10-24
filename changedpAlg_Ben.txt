@@ -57,6 +57,7 @@ changedpInternal(change, V, T, C)   // V, T, C passed by reference
         if (change == V[d]) // V[d] is a coin's denomination or value
             D[d] = 1
             C[change] = D
+            T[change] = 1
             return 1
     
     from i=0 to V[i] < change
@@ -65,6 +66,7 @@ changedpInternal(change, V, T, C)   // V, T, C passed by reference
             minCoins = numCoins
             D = C[change - V[i]]     // (re)assign D
             D[i] = D[i] + 1
+            T[change] = minCoins
     
     return minCoins
     

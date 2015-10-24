@@ -1,0 +1,26 @@
+
+
+1. Describe, in words, how you fill in the dynamic programming table in changedp. Justify why is this a valid way to fill the table?
+
+The table is two arrays, T for the minimum number of coins at each amount change,
+and C for the denominations needed, where each element C[change] is an array D indicating how many coins of each denomination are needed to make given change.
+
+
+Correctness of C[change][D]:
+For the solution, the minimum number of coins needed to make up each change value, there is stored an array D, where each index d holds the value D[d] coins of value V[d].
+For example, for change amount of 15, if V: {1, 5, 10, 25}, then D: {0, 1, 1, 0}.
+
+It is valid because:
+    When change = 0, D: {1 or more elements of value 0}, T[0] = 0
+    When change = 1, D: {1...followed by 0 or more elements of value 0}, T[1] = 1
+    When change > 1, the algorithm will find the minimum coins needed: T[change] = minCoins.
+    It does so by finding min(V[i]≤v) {T[v-V[i]]+1} = minCoins.
+    For the value of i that gives the minimum, that i is the index of the coin denomination of the added coin "+1" in "T[v-V[i]]+1" = T[v] change.  At this point we have all the information we need to construct the array D.  We look up another array D which is an element of C indexed at C[v-V[i]] (and if it is not yet in C, we make a recursive call that will solve it).  In other words, C[v-V[i]] is the element D, an array indicating the number of each coin denomination needed to make change for (change - V[i]).  Then, by incrementing the corresponding index D[i], we get the array D needed to make ((change - V[i]) + V[i]) = change.  At this point, we have constructed the array D for the current change value and add this new D as the next element of array C.
+
+
+Correctness of T[v]:
+Array T is filled in sync with the filling of C.  Using the proof in question 3 as our foundation, we know that each change value v is correctly found by T[v] = min(V[i]≤v) {T[v-V[i]]+1}, so that minCoins in the corresponding algorithm is correctly assigned to T[v].  For each value 0 <= v <= change, a new element n is added to array T.  Since solutions to larger change values depend on solutions to smaller ones, the table is filled from least to greatest values of change, where all elements v < n are added to the table before n.
+
+3. Prove that the dynamic programming approach is correct by induction. That is, prove that
+T[v] = min(V[i]≤v) {T[v-V[i]]+1}, T [0] = 0 is
+the minimum number of coins possible to make change for value v.
