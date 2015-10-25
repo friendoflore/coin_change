@@ -6,7 +6,7 @@
 
 using namespace std;
 
-int changedpInternal(int change, const vector<int> V, vector<int> T, vector< vector<int> > C){
+int changedpInternal(int change, const vector<int> V, vector<int> &T, vector< vector<int> > &C){
 
     int minCoins = change;
     vector<int> D (V.size(), 0);
@@ -16,15 +16,17 @@ int changedpInternal(int change, const vector<int> V, vector<int> T, vector< vec
         C.at(0) = D;
         return 0;
     }
+    /*
     else if (change == 1){
         D.at(0) = 1;    // array [1,0,0,...,0]
         C.at(1) = D;
         T.at(1) = 1;
         return 1;
     }
+    */
     else if (T.at(change) != -1){   // solution for change
                                     // should be in table T
-        return T.at(change);
+        return T.at(change);    //WE NEVER HIT THIS LINE!!
     }
     
     for (int d = 0; d < V.size(); d++){
@@ -41,10 +43,10 @@ int changedpInternal(int change, const vector<int> V, vector<int> T, vector< vec
         numCoins = 1 + changedpInternal(change - V.at(i), V, T, C);
         if (numCoins <= minCoins){
             minCoins = numCoins;
-            D = C[change - V.at(i)];     // (re)assign D
+            D = C[change - V.at(i)];    // (re)assign D
             D.at(i) = D.at(i) + 1;
-            C.at(change) = D;         // C[change] = D;
-            T.at(change) = minCoins;         // T[change] = minCoins;
+            C.at(change) = D;           // C[change] = D;
+            T.at(change) = minCoins;    // T[change] = minCoins;
         }
     }
     
@@ -76,15 +78,24 @@ solution changedp(int change, const vector<int> V){
     
 }
 
-//NOTE: lines 66 and 44 may be a problem
+//NOTE: line 44 may be a problem
 
 
 int main (int argc, char* argv[]){
     
     
-    // initial test
-    vector<int> V {1, 2, 4, 8};
-    int change = 15;
+    // Test 1: expected: m=4, [1,1,1,1]
+    //vector<int> V {1, 2, 4, 8};
+    //int change = 15;
+    
+    // Test 2: expected: m=4, [0,1,2,1]
+    //vector<int> V {1, 3, 7, 12};
+    //int change = 29;
+    
+    // Test 3: expected: m=3, [0,0,1,2]
+    vector<int> V {1, 3, 7, 12};
+    int change = 31;
+    
     
     solution test_sol = changedp(change, V);
     
