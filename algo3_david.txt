@@ -1,0 +1,56 @@
+int vectContSum(vector<int> vect)
+{
+	int count = 0;
+
+	for (int i = 0; i < vect.size(); i++)
+	{
+		count += vect[i];
+	}
+
+	return count;
+}
+
+
+void changeslow(vector<int> V, int A, vector<int> &change)
+{
+	vector<vector<int>> solutions;
+	vector<int> retValue; 
+
+	// set solutions[0]
+	vector<int> zeroSolution(V.size(), 0);
+	solutions.push_back(zeroSolution);
+
+	// bottom up fill the solutions table
+	for (int i = 1; i <= A; i++)
+	{
+		vector<int> tempchange(V.size(), 0);
+		int count = A;
+		int j = 0;
+
+		// while the coin at V[j] is less than or equal to value A subtract V[j] from A and get the solution out 
+		// of the solution table. We know that is is there since we are building from V[0] up 
+		while (j < V.size() && V[j] <= i)
+		{
+			vector<int> tempChange(V.size(), 0);
+			int tempCount = A;
+
+			tempChange = solutions[i - V[j]];
+			tempChange[j]++; // add one to tempchange to cover the addition of one V[i] coin
+			tempCount = vectContSum(tempChange);
+
+			if (tempCount <= count)
+			{
+				retValue = tempChange;
+				count = tempCount;
+			}
+
+			j++;
+		}
+
+		// solutions[i] = min from above while loop 
+		solutions.push_back(retValue);
+	}
+
+	change = solutions[A];
+
+}
