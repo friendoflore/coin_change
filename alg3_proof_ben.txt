@@ -1,0 +1,69 @@
+OSU CS 325 Project 2
+
+Question 3:
+
+Prove that the dynamic programming approach is correct by induction. That is, prove that
+T[v]= min(V[i]<=v){T[v - V[i]] + 1}, T [0] = 0 is
+the minimum number of coins possible to make change for value v.
+
+Step 1: Define Subproblem:
+
+The problem is that we are to find the minimum number of coins needed to make v change.
+Subproblem: v - coin of any denomination in set V <= v.
+Therefore, all subproblems are enumerated as v - V[i] for V[i] <= v and 1 <= i,
+where V is the set of coin denominations {1 = v1 < v2 < ... < vn}.
+
+Step 2: Write a Recurrence:
+
+Let T[v] = minimum number of coins needed to make v change using set V of coin denominations.
+Then the recurrence is:
+T[v] = min(V[i]<=v) {T[v - V[i]] + 1}
+
+Step 3: Base Cases:
+
+Case 1: T[0] = 0 coins
+Case 2: T[1] = 1 coin
+Case 3: T[V[i]] = 1 coin
+
+Step 4: Prove Recurrence of Step 2
+
+
+Prove Base Cases:
+    Case 1: T[0] = 0 coins is given to us by definition of the problem, and it is also evident that it takes no coins to make change of v=0.
+    Case 2: We know T[1] = 1 coin because v1 = 1, the coin denomination of lowest value in set V.
+Therefore, T[1] = min(V[i]<=v) {T[1-1] + 1}
+                = T[0] + 1          (only v1 can be taken from v=1, leaving only one subproblem T[0])
+                = 1
+    Case 3: T[V[i]] = min(V[i]<=V[i]) {T[V[i] - V[i]] + 1]}
+We can observe that for each coin value in set V, there is only one subproblem where min(V[i]<=V[i]) condition is satisfied as min(V[i]=V[i]).
+Furthermore, since V[i] - V[i] = 0 for each coin denomination V[i], this gives us the following:
+T[V[i]] = min(V[i]=V[i]) {T[0] + 1]} = T[0] + 1 = 1.
+Therefore, we've proven that T[V[i]] = 1.
+
+
+Other cases where v != 0, 1, V[i]:
+    Part of this proof will involve constructing the formula by observing relevant mathematical properties.
+    We know by V[i]<= v that v - V[i] >= 0.
+We also know that 1 coin accounts for V[i],
+so that by taking V[i] amount away from v,
+we are left with amount v - V[i] plus that one coin.  Namely, v = v - V[i] + V[i] is taking a coin away from v and then adding it back on.
+This gives us T[v - V[i]] + 1 coins, the minimum number of coins needed that must include a coin of value V[i].
+This is based on something given to us that we must assume, that T[n] is the minimum number of coins needed to make change n.
+Substituting (v - V[i]) for n, it follows that (v - V[i]) is the minimum number of coins needed to make T[v - V[i]].
+
+Now since the size of set V >= 1, there may be more than one coin value that can be deducted from change v.
+But it still holds that for every value of V[i], we find T[v - V[i]] + 1, the minimum number of coins.
+For every V[i] at a current level of recursion, there is a recursive call, leading T[n] closer to a base case,
+because n = v - V[i] and so the subproblem amount of change at each subsequent sublevel of recursion has been decremented
+by a coin value V[i].  Furthermore, if base case 3 is reached, one more recursive call will lead to case 1.  Otherwise, base case 2 will be reached.
+
+Since we are taking the minimum over all the coin values in V for T[v - V[i]] + 1, we know that for whichever value of i gives this minimum T[v - V[i]] coins,
+v - V[i] < v where V[i] is positive, so that we must add at least 1 coin to arrive at v.  Because 1 is the least number of coins we must add to arrive at amount v,
+by chosing the coin of value V[i] we now have proven that T[v - V[i]] + 1 is the least number of coins needed to make change for amount v.
+
+Restated: T[v] = min(V[i]<=V) {T[v - V[i]] + 1}.
+This completes our proof.
+
+
+Note: The iterative, bottom-up DP algorithm provided builds a table of solutions to T[v] for change values 0, 1, ... , v by following this recursive definition starting from the base case T[0] back up the recursion with T[v] as the last problem solved.
+
