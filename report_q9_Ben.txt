@@ -1,0 +1,104 @@
+
+
+OSU CS 325 Project 2
+
+Question 9: Suppose you are living in a country where coins have values that are powers of p, V = [p^0 , p^1 , p^2 , ··· , p^n]. How do you think the dynamic programming and greedy approaches would compare? Explain
+
+*****
+
+We will demonstrate that by-in-large, the greedy algorithm is much better than the dp algorithm for coin sets of type V = [p^0, p^1, p^2, ...].  Also, we'll state that the greedy algorithm gives accurate results only for coin sets of type V = [p^0, p^1, p^2, ...] but is not always accurate for other coin sets V, such as with A = 98 and V=[1, 49, 50].
+
+*****
+
+Example comparison between greedy and dp algorithms, with relatively small values of p:
+
+With a relatively smaller difference between V[i] and V[i+1], in other words, small p value,
+taking an example p = 3, and V = [1, 3, 9, 27], A = 100,
+the greedy algorithm chooses in order coins of the following values:
+
+27, 27, 27, 9, 9, 1 = 6 coins.
+
+In this example, there is a call for each coin chosen, for a total of 6 calls.
+Observe: greedy algorithm always makes (number of coins chosen) calls.
+
+Now, running this same example on the dp algorithm, we find there are Theta(n) calls = 100 calls,
+because whether it be the iterative dp or recursive dp, what we end up doing is filling the solution table
+from values of n = 0 to 100, calculating every possible subproblem.
+So we see that the greedy algorithm avoids calculating every possible subproblem by working top-down (largest to smallest subproblems)
+instead of bottom-up (smallest to largest subproblems).
+
+Therefore, compared to the dynamic programming algorithm, we can observe that for relatively small values of p,
+the performance gain in choosing the greedy algorithm over dp is more significant...
+
+
+So what if p were relatively large?  For example, what if p = 100, A = 199, V = [1, 100, 10000, 1000000]?
+
+Then (1) the greedy algorithm makes the following iterations, adding to "coins" from one iteration to the next:
+It 1: T[199], chosen: v2 = 100, coins = 1, remaining change = 99
+It 2: T[99],  chosen: v1 = 1,   coins = 2, remaining change = 98
+It 3: T[98],  chosen: v1 = 1,   coins = 3, remaining change = 97
+...(Each successive iteration follows the pattern of choosing v1=1.)
+It 99+1=100: T[1], chosen: v1 = 1, coins = 100, remaining change = 0 --> END.
+
+Greedy total iterations = 100, solution: 100 coins
+
+And (2) the iterative dp algorithm makes the following iterations:
+After setting T[0] = 0,
+It 1: T[1] = 1
+It 2: T[2] = 2
+...(This pattern continues.)
+It 99: T[99] = 99
+It 100: T[100] = 1
+It 101: T[101] = 2
+...
+It 199: T[199] = 100
+
+DP total iterations = 199, solution: 100 coins.
+(Note: the memoized-recursive dp algorithm must also make 199 calls.)
+
+We can observe from this that (1) the greedy algorithm is still better than (2), the dp algorithm,
+but by a smaller margin for relatively large values of p where A is close to p, in this case, 
+a time difference of 99 calls * constant time.
+
+However, if we were to add the following logic to both dp and greedy algorithms and compare greedy to recursive dp:
+
+if (1 = v1 <= n remaining change < v2)
+    T[n] = n
+
+in this example of A = 199, V = [1, 100, 10000, 1000000]:
+Greedy total iterations = 2 and
+Recursive DP splits into multiple subproblems ending with T[99], 
+at which point we start memoizing with T[99] and walking back up the recursion tree, 
+also saving us 99 calls, so...
+original recursive DP: 199 calls
+new recursive DP: 100 calls (to get from T[199] to T[99]).
+
+Such time reductions can be made with additional logic to compensate for relatively large differences between vi and v(i+1),
+but the greedy algorithm will still be faster.
+
+*****
+
+On an additional note, taking the example input A = 54 and V=[1, 15, 50],
+we can observe that both the greedy and dp algorithms will give us correct results.
+In other words, both algorithms give us minimum coins = 5.
+
+However, by proof-by-construction, we know that the greedy algorithm does not give us correct results
+for all types of input.
+Take, for example, A = 98, V = [1, 49, 50].
+The greedy algorithm chooses coins of value 50, 1, 1, 1, and 1, in that order, for a total of 5 coins.
+Yet the correct answer is the set of coins valued 49, 49, for a total of 2 coins.
+In contrast, the DP algorithm gives us this correct solution.
+
+
+*****
+
+Conclusion:
+
+The greedy algorithm is faster than the dp algorithm for sets of V of type V = [p^0, p^1, p^2, ...].
+Also, the greedy algorithm will always be accurate for sets of V of type V = [p^0, p^1, p^2, ...],
+but not accurate for all other types of set V.
+And although slower overall, the DP algorithm will always be accurate for all sets of type V.
+
+
+
+
