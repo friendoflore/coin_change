@@ -1,9 +1,9 @@
 I. File list
 ------------
-changeslow.cp					Slow algorithm implementation
+changeslow.cp				Slow algorithm implementation
 changegreedy.cp				Greedy algorithm implementation
-changedp.cp 					Dynamic programming algorithm implementation
-README								This file
+changedp.cp 				Dynamic programming algorithm implementation
+README					This file
 
 
 II. Program instructions
@@ -75,12 +75,12 @@ the number of sample problems provided in the sample file.
 
 For example, "Sample.txt" could be the following:
 
-[1, 2, 5, 10, 25]
-101
-[1, 3, 6, 13]
-5
-[1, 20, 40, 63, 137]
-2009
+	[1, 2, 5, 10, 25]
+	101
+	[1, 3, 6, 13]
+	5
+	[1, 20, 40, 63, 137]
+	2009
 
 Each program reads in the the problem sets from the provided file and runs
 their respective algorithms on them.
